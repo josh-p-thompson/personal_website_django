@@ -1,107 +1,85 @@
 {% load static %}
 
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
     <title>
-        {% block title %}
-            My Site
-        {% endblock title %}
+        Josh Thompson - {% block title %}{% endblock %}
     </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <![endif]-->
+    <!-- bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <link href="{% static 'css/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,900&display=swap" rel="stylesheet">
+    <link href={% static "fonts/fontawesome-free/css/all.min.css" %} rel="stylesheet">
 
-    <link href="{% static 'css/signinform.css' %}" rel="stylesheet">
+    <!-- custom css -->
+    <link href={% static "css/about.css" %} rel="stylesheet">
 
-    <!-- Add your custom CSS to this file -->
-    <link href="{% static 'css/custom.css' %}" rel="stylesheet">
-
-  </head>
+</head> 
 
 <body>
-
-<nav class="navbar navbar-expand-md">
-    <div class="container">
-        <a class="navbar-brand" href="/">
-            <!-- Add your logo here!  <img src="" /> -->
-            My Site
-        </a>
-
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon">
-                ☰
-            </span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'home' %}">Start</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'about' %}">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'view_all_users' %}">Users</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav ml-auto">
-                {% if request.user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}" >Sign Out</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'view_profile' request.user %}" >
-                            {{ request.user }}
-                            <img src="{{ user.gravatar }}" class="navbar-avatar" />
-                        </a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a id="log-in-link" class="nav-link" href="{% url 'login' %}">Log In</a>
-                    </li>
-                    <li class="nav-item">
-                        <a id="log-in-link" class="nav-link" href="{% url 'signup' %}">Sign up</a>
-                    </li>
-                {% endif %}
-            </ul>
-
+    <div class="container-fluid">
+        <div class="row">
+            <div class="left-block col-lg-6"> 
+                <div class="row">
+                    <div class="col">
+                        <div class="icons">
+                            <a href="mailto:hire.me.josh.p.thompson@gmail.com" target="_blank">
+                                <i class="far fa-envelope"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/joshuapthompson/" target="_blank">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="https://github.com/josh-p-thompson" target="_blank">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row no-gutters">
+                    <div class="col-2 align-self-center">
+                        <img class="headshot img-fluid rounded-circle mx-auto mb-2" src= {% static "images/headshot.jpeg" %}>
+                    </div>
+                    <div class="col align-self-center">     
+                        <h1 class='name-title'>
+                            Josh Thompson
+                        </h1>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col'>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Feugiat in ante metus dictum at tempor commodo ullamcorper. Maecenas ultricies mi eget mauris pharetra et ultrices. Nunc pulvinar sapien et ligula ullamcorper malesuada. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        </p>                     
+                    </div>
+                </div>
+                <div class="row">
+                    {% for page in pages %}
+                    <div class="button-padding col">
+                        <a role="button" class="btn btn-outline-dark {% if page.path == path%}active{% else %}''{% endif %} btn-block" href="{{ page.path|safe }}" >{{ page.title|title|safe }}</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="right-block col-lg-6 offset-lg-6">
+                {% for card in cards %}
+                {% block card %}
+                {% endblock %}
+                {% endfor %}
+            </div>
         </div>
-    </nav>
-</div>
-
-
-
-{% block main %}
-    <div class="container pt-2">
-
-      {# Enable Django's "messages" system #}
-      {% if messages %}
-          {% for message in messages %}
-              <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
-          {% endfor %}
-      {% endif %}
-
-      {% block content %}
-        <p>Use this as a way to quick start any new project.</p>
-      {% endblock content %}
-
     </div>
-{% endblock main %}
-
-
-      <script src="{% static 'js/bootstrap/jquery-3.4.1.min.js' %}"></script>
-      <script src="{% static 'js/bootstrap/bootstrap.js' %}"></script>
-  </body>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
 </html>
-
